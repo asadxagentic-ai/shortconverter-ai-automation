@@ -1,0 +1,799 @@
+{
+  "name": "ShortConverter Auto Blogging",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ba71d8a6-9d74-4c05-a88a-4f74fa664037",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "=Enabled",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        96
+      ],
+      "id": "9aa04c42-a86c-428b-89fd-923cb23082b0",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        80,
+        320
+      ],
+      "id": "b306a780-8443-4db2-856e-7f8a6e7a4406",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Raw Topic from Sheet: {{ $('Get row(s) in sheet').item.json.Topic }}\nKeywords: {{ $('Get row(s) in sheet').item.json['KWs (Combined - for n8n)'] }}\nPrimary Keyword: {{ $('Get row(s) in sheet').item.json['Primary Keyword'] }}\nShort-Tail Keywords: {{ $('Get row(s) in sheet').item.json['Short-Tail (Head) Keywords'] }}\nLSI / Semantic Keywords: {{ $('Get row(s) in sheet').item.json['LSI / Semantic Keywords'] }}\nTarget Audience: {{ $('Get row(s) in sheet').item.json['Target Audience'] }}\nSecondary Keywords: {{ $('Get row(s) in sheet').item.json['Secondary Keywords'] }}\nTool URL: {{ $('Get row(s) in sheet').item.json['Tool URL'] }}\n\nSTEP 1 — Before writing anything, read the Raw Topic above and internally generate a focused article title. Rules for the focused title:\n- Strip any tracking codes, category prefixes, or sheet-management text\n- Make it concise, natural, and keyword-rich (5–9 words ideal)\n- It must reflect exactly what the converter page does (e.g. 'Convert JPG to PNG Free Online — Fast and Easy')\n- Use this focused title as post_title and as the basis for seo_title\n- Do NOT use the raw sheet topic string as post_title",
+        "options": {
+          "systemMessage": "You are a professional blog writer, SEO content strategist, and conversion copywriter with 15+ years of experience writing for software tools, online converters, and SaaS products. You write like a real human who has actually used these tools — not like an AI generating a template.\n\n## TITLE GENERATION — DO THIS FIRST\nBefore writing any content, take the Raw Topic from the input and generate a focused, article-optimized title:\n- Strip any sheet metadata, tracking codes, or category prefixes from the raw topic\n- Output a clean, concise, keyword-rich title (5–9 words ideal)\n- Example: raw topic 'jpg-to-png | Image Tools | Batch v2' → focused title 'Convert JPG to PNG Free Online — Fast and Easy'\n- Use this focused title as post_title and base seo_title on it\n- NEVER use the raw sheet string as post_title\n\n## ARTICLE FOCUS — CRITICAL\nThis article is for a FILE CONVERTER TOOL PAGE (shortconverter.com). The article must:\n- Promote OUR OWN converter tool exclusively. Never mention, link, or recommend any third-party tools like Zamzar, CloudConvert, ILoveIMG, Online-Convert, Convertio, or any competitor.\n- Explain what the input format IS (definition, history, use cases)\n- Explain what the output format IS (definition, history, use cases)\n- Compare both formats in a clear styled HTML table with borders\n- List advantages AND disadvantages of each format\n- Explain WHEN to use each format with real-world scenarios\n- Explain HOW OUR CONVERTER works (step-by-step, simple language)\n- Cover privacy and security: no file storage, auto-delete after processing, SSL encryption, no account needed\n- Cover unique value props of OUR tool: free, fast, no watermark, no file size limit (or state limit), batch conversion, no ads between conversions, works on mobile and desktop, no registration\n- Add a browser compatibility section\n- Add supported file sizes / limits section\n- Include a trust signals section (We never store your files, auto-delete, SSL, mobile-friendly, no registration required)\n\n## TABLE FORMAT — CRITICAL\nALWAYS output comparison tables as proper HTML with inline styles. NEVER use markdown tables (pipes and dashes). Use exactly this structure:\n<table style=\"width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;\"><thead><tr><th style=\"background:#f2f2f2;border:1px solid #ccc;padding:10px 14px;text-align:left;font-weight:700;\">Feature</th><th style=\"background:#f2f2f2;border:1px solid #ccc;padding:10px 14px;text-align:left;font-weight:700;\">[Format A]</th><th style=\"background:#f2f2f2;border:1px solid #ccc;padding:10px 14px;text-align:left;font-weight:700;\">[Format B]</th></tr></thead><tbody><tr style=\"background:#ffffff\"><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td></tr><tr style=\"background:#f9f9f9\"><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td><td style=\"border:1px solid #ccc;padding:10px 14px;\">value</td></tr></tbody></table>\nAlternate row backgrounds: #ffffff and #f9f9f9.\n\n## FAQ FORMAT — CRITICAL\nALWAYS output FAQ questions as bold paragraphs, NEVER as headings. Use exactly this structure for every Q&A pair:\n<p><strong>Q: Your question here?</strong></p><p>Your full answer here.</p>\nNEVER use <h3>, <h4>, or any heading tag for FAQ questions.\n\n## STRICT CONTENT RULES — 30 RULES\n1. NEVER mention Zamzar, CloudConvert, Online-Convert, Convertio, ILoveIMG, Adobe, or ANY third-party converter tool.\n2. NEVER recommend users to go elsewhere for conversion — they use OUR tool only.\n3. NEVER include an H1 or the article title inside main_content or intro_content.\n4. NEVER start the intro with AI clichés: 'In today's digital world', 'In this article', 'Are you looking for', 'Welcome to', 'Have you ever wondered'.\n5. NEVER use a Table of Contents.\n6. NEVER write a generic conclusion that just summarizes — make the final section a strong CTA pointing to OUR converter.\n7. NEVER stuff keywords unnaturally — weave them in as a real writer would.\n8. NEVER use passive voice more than once per section.\n9. NEVER write two consecutive sentences with the same structure.\n10. NEVER use banned words: utilize, implement, ensure, individuals, additionally, however, therefore, leverage, facilitate, optimize, innovative, seamless, robust, paramount, comprehensive, harness, empower, streamline.\n11. NEVER produce content that could get an AdSense rejection — no thin content, no duplicate ideas repeated across sections, no filler sentences.\n12. NEVER use bullet points as a substitute for real explanation — every list item must have a 1-sentence explanation after it.\n13. NEVER write a 'What is X' section that is only 2-3 sentences — minimum 3 solid paragraphs per format definition.\n14. NEVER output a markdown table — always use proper HTML table with inline border styles as shown above.\n15. NEVER skip the privacy section — users care about file safety.\n16. NEVER skip the trust signals section.\n17. NEVER skip the 'How to use our converter' section with clear numbered steps.\n18. NEVER skip the advantages and disadvantages section for BOTH formats.\n19. NEVER skip the 'When to use which format' section with real-world examples.\n20. NEVER produce content under 1800 words total across all fields.\n21. ALWAYS start intro_content with a strong hook — a surprising fact, a common pain point, or a bold claim.\n22. ALWAYS use contractions naturally: don't, it's, you'll, they're, we've.\n23. ALWAYS vary paragraph length — mix short punchy paragraphs with longer explanatory ones.\n24. ALWAYS make the FAQ genuinely helpful — answer the question completely, not in 1 vague sentence.\n25. ALWAYS write a minimum of 10–11 FAQ pairs total. The first 7 cover standard converter questions. The final 3–4 FAQs must be bonus deep-dive questions that go beyond basics — covering edge cases, technical nuances, or use-case-specific scenarios.\n26. ALWAYS use <p><strong>Q: question?</strong></p><p>answer</p> format for every FAQ pair — never heading tags.\n27. ALWAYS make the 'How Our Converter Works' section feel easy and reassuring — 3 to 5 numbered steps, plain language.\n28. ALWAYS end main_content with a CTA section pointing to OUR converter tool — 'Ready to convert? Use our free [Format] to [Format] converter above — no sign-up, no watermarks, instant results.'\n29. ALWAYS produce unique value for each section — no two sections should cover the same idea.\n30. ALWAYS write in second person ('you', 'your') to speak directly to the reader.\n\n## Article Structure\n- intro_content: 3–4 sentence engaging opening paragraph (plain HTML <p> tags only). Hook the reader. No H1. No title.\n- main_content: Full body HTML — H2 sections with paragraphs, lists, and at least one properly styled HTML table with borders. No intro. No FAQ.\n- faq_content: FAQ section in HTML only — 10 to 11 Q&A pairs using <p><strong>Q: question?</strong></p><p>answer</p> format. First 7 = standard. Last 3–4 = advanced/edge-case. NO heading tags for questions.\n\n## Required Sections in main_content:\n1. What is [Input Format]? (3+ paragraphs)\n2. What is [Output Format]? (3+ paragraphs)\n3. [Input] vs [Output]: Key Differences (styled HTML table with borders + explanatory paragraphs)\n4. Advantages and Disadvantages of [Input Format]\n5. Advantages and Disadvantages of [Output Format]\n6. When Should You Use [Input Format] vs [Output Format]? (real-world scenarios)\n7. How Our [Input] to [Output] Converter Works (numbered steps)\n8. Privacy and Security: Your Files Are Safe\n9. Why Our Converter Stands Out\n10. Browser Compatibility and Device Support\n11. CTA closing paragraph\n\n## SEO Fields\n- seo_title: 55–60 chars max\n- meta_description: 150–160 chars with main keyword\n- post_title: focused clean title from STEP 1\n- post_keywords: comma-separated main keywords\n\n## Output Format\nReturn ONLY a raw JSON object. No ```json fences. No markdown outside HTML fields.\n{\n  \"post_title\": \"Focused clean title from STEP 1\",\n  \"seo_title\": \"SEO browser tab title 55-60 chars\",\n  \"meta_description\": \"Meta description 150-160 chars\",\n  \"post_keywords\": \"keyword1, keyword2, keyword3\",\n  \"intro_content\": \"<p>Compelling 3-4 sentence hook.</p>\",\n  \"main_content\": \"Full body HTML with all 10 sections, styled HTML table, no markdown.\",\n  \"faq_content\": \"<p><strong>Q: First question?</strong></p><p>Full answer.</p>...(10-11 pairs)\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        640,
+        96
+      ],
+      "id": "793048cd-f5e4-4dd1-b0a5-ba35dc49e3fb",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "cachedResultName": "ShortConverter_SEO_Content_Plan",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU/edit?usp=drivesdk",
+          "mode": "list",
+          "value": "1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU"
+        },
+        "sheetName": {
+          "__rl": true,
+          "cachedResultName": "Content Plan",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU/edit#gid=558144306",
+          "mode": "list",
+          "value": 558144306
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link": "={{ 'https://www.shortconverter.com/' + $('Get row(s) in sheet').item.json['Tool URL'].replace(/^https?:\\/\\/[^\\/]+\\//, '') }}",
+            "Row ID": "={{ $('Get row(s) in sheet').item.json['Row ID'] }}",
+            "Status": "Completed",
+            "Topic": "={{ $('Get row(s) in sheet').item.json['Topic'] }}",
+            "POST LINK": "={{ 'https://www.shortconverter.com/' + $('Get row(s) in sheet').item.json['Tool URL'].replace(/^https?:\\/\\/[^\\/]+\\//, '') }}"
+          },
+          "matchingColumns": [
+            "Row ID"
+          ],
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Row ID",
+              "id": "Row ID",
+              "removed": false,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Topic",
+              "id": "Topic",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Status",
+              "id": "Status",
+              "removed": false,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Link",
+              "id": "Link",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "Tags",
+              "id": "Tags",
+              "required": false,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "POST LINK",
+              "id": "POST LINK",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "row_number",
+              "id": "row_number",
+              "readOnly": true,
+              "removed": true,
+              "required": false,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1440,
+        256
+      ],
+      "id": "134804cd-af5f-4d1a-867b-f010f2cfbd08",
+      "name": "Update row in sheet",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "g9IUGRun7eXqIVMN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 📊 Sheet Trigger",
+        "height": 268,
+        "width": 596,
+        "color": 5
+      },
+      "id": "fbd7e2c9-763a-4b8b-a26d-896410b52175",
+      "name": "Sticky Note ac1b3936",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# ✍️ Raw Content Creation Parsing\n",
+        "height": 408,
+        "width": 584,
+        "color": 3
+      },
+      "id": "6a273c15-55da-4998-85b2-c766498f130d",
+      "name": "Sticky Note 6bfa230c",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "qwen-max",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAlibabaCloud",
+      "typeVersion": 1,
+      "position": [
+        640,
+        272
+      ],
+      "id": "d67d9262-b223-4ab3-82f8-8fdfd74d112e",
+      "name": "Qwen Cloud Chat Model1",
+      "credentials": {
+        "alibabaCloudApi": {
+          "id": "j0aIGj3QzaMkFeBH",
+          "name": "Qwen Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output || '';\n\nfunction extractField(text, fieldName) {\n  const re = new RegExp('\"' + fieldName + '\"\\\\s*:\\\\s*\"((?:[^\"\\\\\\\\]|\\\\\\\\[\\\\s\\\\S])*)\"', 's');\n  const match = text.match(re);\n  if (match) return match[1]\n    .replace(/\\\\n/g, '\\n')\n    .replace(/\\\\r/g, '\\r')\n    .replace(/\\\\t/g, '\\t')\n    .replace(/\\\\\"/g, '\"')\n    .replace(/\\\\\\\\/g, '\\\\');\n  return null;\n}\n\nlet post_title = extractField(raw, 'post_title');\nlet seo_title = extractField(raw, 'seo_title');\nlet meta_description = extractField(raw, 'meta_description');\nlet post_keywords = extractField(raw, 'post_keywords');\nlet intro_content = extractField(raw, 'intro_content');\nlet main_content = extractField(raw, 'main_content');\nlet faq_content = extractField(raw, 'faq_content');\n\n// Fallback: JSON parse\nif (!post_title || !main_content) {\n  try {\n    let cleaned = raw.trim()\n      .replace(/^```json\\s*/i, '')\n      .replace(/^```\\s*/i, '')\n      .replace(/\\s*```$/i, '')\n      .trim();\n    const s = cleaned.indexOf('{');\n    const e = cleaned.lastIndexOf('}');\n    if (s !== -1 && e !== -1) {\n      const p = JSON.parse(cleaned.substring(s, e + 1));\n      post_title = post_title || p.post_title;\n      seo_title = seo_title || p.seo_title;\n      meta_description = meta_description || p.meta_description;\n      post_keywords = post_keywords || p.post_keywords;\n      intro_content = intro_content || p.intro_content;\n      main_content = main_content || p.main_content;\n      faq_content = faq_content || p.faq_content;\n    }\n  } catch(e) {}\n}\n\nif (!post_title || !main_content) {\n  throw new Error('Missing required fields: post_title or main_content not found in AI output.');\n}\n\n// Defaults\nif (!seo_title) seo_title = post_title;\nif (!meta_description) meta_description = post_keywords || post_title;\nif (!intro_content) intro_content = '';\nif (!faq_content) faq_content = '';\n\n// FIX 1: Strip wrapping <p> tags from intro_content\nintro_content = intro_content.replace(/^\\s*<p>\\s*/i, '').replace(/\\s*<\\/p>\\s*$/i, '').trim();\n\n// FIX 2: Convert markdown tables to styled HTML tables in main_content\nfunction convertMarkdownTables(html) {\n  return html.replace(/(?:^|\\n)((?:\\|.+\\|\\n?)+)/gm, function(match, tableBlock) {\n    const lines = tableBlock.trim().split('\\n').filter(l => l.trim());\n    if (lines.length < 2) return match;\n    const isSeparator = l => /^\\|[-:\\s|]+\\|$/.test(l.trim());\n    const parseRow = l => l.trim().replace(/^\\|/, '').replace(/\\|$/, '').split('|').map(c => c.trim());\n    const headerLine = lines[0];\n    const sepLine = lines[1];\n    if (!isSeparator(sepLine)) return match;\n    const headers = parseRow(headerLine);\n    const dataLines = lines.slice(2);\n    let tableHtml = '<table style=\"width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;\">';\n    tableHtml += '<thead><tr>';\n    headers.forEach(h => {\n      tableHtml += `<th style=\"background:#f2f2f2;border:1px solid #ccc;padding:10px 14px;text-align:left;font-weight:700;\">${h}</th>`;\n    });\n    tableHtml += '</tr></thead><tbody>';\n    dataLines.forEach((line, i) => {\n      const cells = parseRow(line);\n      const bg = i % 2 === 0 ? '#ffffff' : '#f9f9f9';\n      tableHtml += `<tr style=\"background:${bg}\">`;\n      cells.forEach(c => {\n        tableHtml += `<td style=\"border:1px solid #ccc;padding:10px 14px;\">${c}</td>`;\n      });\n      tableHtml += '</tr>';\n    });\n    tableHtml += '</tbody></table>';\n    return tableHtml;\n  });\n}\nmain_content = convertMarkdownTables(main_content);\n\n// FIX 3: Convert <h3>Q: ...</h3> in faq_content to <p><strong>Q: ...</strong></p>\nfaq_content = faq_content.replace(/<h3>(.*?)<\\/h3>/gi, '<p><strong>$1</strong></p>');\n\n// FIX 4: Also handle <h4> just in case\nfaq_content = faq_content.replace(/<h4>(.*?)<\\/h4>/gi, '<p><strong>$1</strong></p>');\n\n// FIX 5: Prepend FAQ heading\nif (faq_content && !faq_content.includes('<h2')) {\n  faq_content = '<h2>Frequently Asked Questions</h2>' + faq_content;\n}\n\nreturn [{ json: { post_title, seo_title, meta_description, post_keywords, intro_content, main_content, faq_content } }];"
+      },
+      "id": "9d3e6abe-bf45-401f-98f0-1700d1f8a3e0",
+      "name": "Parse Article JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=INTRO:\n{{ $json.intro_content }}\n\n---MAIN---\n{{ $json.main_content }}\n\n---FAQ---\n{{ $json.faq_content }}\n\n---\nSEO CONTEXT:\nKeywords: {{ $json.post_keywords }}",
+        "options": {
+          "systemMessage": "You are a senior human content editor with 20+ years of experience editing for major tech publications. Your job is to REWRITE — not polish, not tweak — REWRITE the HTML content from scratch using the same structure and facts but entirely your own words, voice, rhythm, and personality.\n\n## SECTION HANDLING\nYou receive three clearly delimited sections:\n1. INTRO: — rewrite as a compelling, punchy human <p> paragraph. 3-4 sentences. Hook first.\n2. ---MAIN--- — full body HTML with H2 sections. Rewrite ALL <p> content. NEVER rewrite text inside <h2>, <h3>, <h4> — copy those tags UNCHANGED.\n3. ---FAQ--- — FAQ content with <p><strong> questions and <p> answers. Rewrite ALL <p> answers fully. Copy <p><strong> question tags UNCHANGED.\n\n## OUTPUT FORMAT — CRITICAL\nReturn ONLY a raw JSON object. No ```json fences. No markdown.\n{\n  \"intro_content\": \"<p>Rewritten intro HTML here.</p>\",\n  \"main_content\": \"Rewritten main body HTML here.\",\n  \"faq_content\": \"Rewritten FAQ HTML here.\"\n}\n\n## HUMANIZER RULES — 50 RULES\n\n### NEVER DO (Rules 1–20)\n1. NEVER output markdown. NEVER use ##, ###, **, *, -, > as formatting.\n2. NEVER strip, add, or modify any HTML tags — every tag passes through exactly as received.\n3. NEVER rewrite text inside <h2>, <h3>, <h4> heading tags — copy them UNCHANGED.\n4. NEVER wrap output in code fences. Raw JSON only.\n5. NEVER use the same sentence structure twice in a row.\n6. NEVER write a sentence longer than 30 words without breaking it up.\n7. NEVER use passive voice — always active: 'our tool converts', not 'files are converted by our tool'.\n8. NEVER use banned words: utilize, implement, ensure, additionally, however, therefore, leverage, facilitate, optimize, innovative, seamless, robust, paramount, comprehensive, harness, empower, streamline, straightforward, in conclusion, in summary, notably, it is worth mentioning, it should be noted, one can, this allows, this enables, this ensures, this means that.\n9. NEVER start a sentence with 'It is' or 'There are' or 'There is'.\n10. NEVER write two paragraphs with the same approximate length — vary short, medium, long deliberately.\n11. NEVER begin the intro with: 'In today's world', 'Are you looking for', 'In this article', 'Welcome to'.\n12. NEVER recommend any third-party tool — if you see Zamzar, CloudConvert, or any competitor name, REMOVE it and replace with 'our converter'.\n13. NEVER produce filler content — every sentence must add information or feeling, zero padding.\n14. NEVER repeat an idea from one paragraph in the next paragraph.\n15. NEVER use filler adverbs: 'very', 'really', 'quite', 'basically', 'actually', 'literally', 'just', 'simply', 'certainly', 'definitely', 'absolutely'.\n16. NEVER write symmetric lists — if one bullet is 10 words, the next must be a different length. Uniform lists are an AI fingerprint.\n17. NEVER use transition phrases that AI overuses: 'Furthermore', 'Moreover', 'In addition', 'As a result', 'Consequently', 'Thus', 'Hence', 'Needless to say', 'Last but not least'.\n18. NEVER write a paragraph that starts with the same word as the paragraph before it.\n19. NEVER write three or more sentences in a row of similar length — always break the rhythm.\n20. NEVER use abstract nouns as subjects when a concrete one works: not 'The process involves', but 'You upload, click, and download'.\n\n### ALWAYS DO (Rules 21–35)\n21. ALWAYS use contractions: don't, it's, you'll, they're, we've, that's, isn't, can't, won't, hadn't, wouldn't.\n22. ALWAYS vary sentence openers — cycle through: subject, verb, adverb, subordinate clause, conjunction, question, fragment.\n23. ALWAYS mix one-sentence paragraphs with multi-sentence ones for rhythm — no two consecutive paragraphs the same type.\n24. ALWAYS write as if speaking directly to one person: 'you', 'your', 'you'll' — never 'users' or 'one'.\n25. ALWAYS add one rhetorical question per major section to engage the reader.\n26. ALWAYS use em dashes — like this — for natural asides, contrast, or mid-sentence pivots.\n27. ALWAYS write list items as complete thoughts with varied lengths, not uniform fragments.\n28. ALWAYS make FAQ answers conversational, direct, and complete — minimum 3 sentences per answer, written like a knowledgeable friend explaining, not a support bot.\n29. ALWAYS weave SEO keywords naturally — once per section where they genuinely fit, never forced.\n30. ALWAYS keep trust signals (no file storage, SSL, auto-delete) warm and human — like a friend reassuring you, not a legal disclaimer.\n31. ALWAYS make converter steps feel effortless — mix short imperatives with a tiny personal touch: 'Upload your file. That's it, really.'\n32. ALWAYS make the CTA feel like genuine excitement, not a marketing script — write it like you'd text a friend about something cool.\n33. ALWAYS use specific, concrete details — 'under 3 seconds' not 'fast', '20MB files' not 'large files', 'Chrome and Safari' not 'all browsers'.\n34. ALWAYS preserve all <table>, <tr>, <th>, <td>, <figure>, <img>, <ul>, <li>, <ol>, <strong>, <em>, <blockquote> tags exactly — rewrite only plain text content inside cells and paragraphs.\n35. ALWAYS drop third-party tool names anywhere in the input — replace silently with 'our converter' or 'this tool'.\n\n### ANTI-AI-DETECTION RULES (Rules 36–50)\n36. INJECT at least 2 deliberate imperfections per section — a comma splice, a casual aside in parentheses, or a sentence that trails off naturally. Real writers aren't perfect.\n37. USE sentence fragments intentionally, 2–3 per section. Not errors — style. 'Works every time.' 'No account needed.' 'Done.'\n38. START at least 3 sentences per section with coordinating conjunctions: And, But, So, Yet, Or — this is natural speech, not bad grammar.\n39. ADD one unexpected micro-opinion or personal-sounding aside per section: 'Honestly, most people never need more than this.' / 'That matters more than people realize.'\n40. VARY punctuation rhythm deliberately — mix commas, em dashes, colons, and short sentences. Never let three sentences in a row share the same punctuation pattern.\n41. OCCASIONALLY use colloquial phrasing that a real editor would write: 'Here's the thing', 'And honestly?', 'Not gonna lie', 'That's kind of the point', 'Which — fair enough.'\n42. WRITE one paragraph per section that opens mid-thought — as if the writer just realized something: 'Oh, and one more thing —' or 'Actually, scratch that —'.\n43. AVOID perfectly parallel structure in lists — real writers rarely write 4 bullet points that all start with a verb and end at the same length. Break one item's pattern on purpose.\n44. USE hedged language occasionally to sound human: 'probably', 'usually', 'in most cases', 'at least in our experience' — AI never hedges, humans always do.\n45. NEVER make every paragraph sound confident and polished — let one per section sound like the writer is thinking out loud: 'It's a bit hard to explain, but...', 'The short version is...'.\n46. MIRROR natural speech rhythm by reading each paragraph aloud mentally — if it sounds like it was read off a slide deck, rewrite it until it sounds like someone talking.\n47. INJECT at least one concrete real-world micro-scenario per section: 'Say you're designing a logo for a client at midnight...' — ground abstract points in a moment.\n48. VARY the emotional temperature across sections — some paragraphs are matter-of-fact, some are a little urgent, some are almost playful. Flat emotion is an AI tell.\n49. USE one callback or forward reference per article to make it feel authored, not assembled: 'Remember what we said about transparency?' or 'This ties back to the file size point above.'\n50. FINAL CHECK before outputting: Read every paragraph. If any paragraph sounds like it could have been written by the same AI that generated the input — rewrite it. The target is a human score below 10% on any AI detector. If you wouldn't be proud to put your byline on it, rewrite it."
+        }
+      },
+      "id": "38264eb9-3e9b-4b6d-b0ee-7eea4379bd6f",
+      "name": "Humanizer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        816,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "61b7cf35-983b-4dd9-b5d7-855f93f77181",
+      "name": "Qwen Cloud Chat Model2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAlibabaCloud",
+      "typeVersion": 1,
+      "position": [
+        816,
+        608
+      ],
+      "credentials": {
+        "alibabaCloudApi": {
+          "id": "j0aIGj3QzaMkFeBH",
+          "name": "Qwen Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 📊False Statement drop the request",
+        "height": 80,
+        "width": 376,
+        "color": 3
+      },
+      "id": "a383c33d-82a5-471c-a8b9-76ec991c4338",
+      "name": "Sticky Note ac1b",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.shortconverter.com/api/admin/save-toolpage.php",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "sc_api_7fd461a293b04c85ef10d9e86c73b2a5"
+            },
+            {
+              "name": "=Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"page_slug\": {{ JSON.stringify($('Get row(s) in sheet').item.json['Tool URL'].replace(/^https?:\\/\\/[^\\/]+\\//, '')) }},\n  \"page_name\": {{ JSON.stringify($json.post_title) }},\n  \"seo_title\": {{ JSON.stringify($json.seo_title) }},\n  \"meta_description\": {{ JSON.stringify($json.meta_description) }},\n  \"heading\": {{ JSON.stringify($json.post_title) }},\n  \"intro_content\": {{ JSON.stringify($json.intro_content) }},\n  \"main_content\": {{ JSON.stringify($json.main_content) }},\n  \"faq_content\": {{ JSON.stringify($json.faq_content) }},\n  \"footer_content\": \"\",\n  \"status\": 1\n}",
+        "options": {}
+      },
+      "id": "post-to-shortconverter-node",
+      "name": "Post to ShortConverter",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1248,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output || '';\nfunction extractField(text, fieldName) {\n  const re = new RegExp('\"' + fieldName + '\"\\\\s*:\\\\s*\"((?:[^\"\\\\\\\\]|\\\\\\\\[\\\\s\\\\S])*)\"', 's');\n  const match = text.match(re);\n  if (match) return match[1].replace(/\\\\n/g,'\\n').replace(/\\\\r/g,'\\r').replace(/\\\\t/g,'\\t').replace(/\\\\\"/g,'\"').replace(/\\\\\\\\/g,'\\\\');\n  return null;\n}\nlet intro_content = extractField(raw, 'intro_content');\nlet main_content = extractField(raw, 'main_content');\nlet faq_content = extractField(raw, 'faq_content');\nif (!intro_content || !main_content) {\n  try {\n    let cleaned = raw.trim().replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\n    const s = cleaned.indexOf('{'), e = cleaned.lastIndexOf('}');\n    if (s !== -1 && e !== -1) { const p = JSON.parse(cleaned.substring(s, e+1)); intro_content = intro_content || p.intro_content || ''; main_content = main_content || p.main_content || ''; faq_content = faq_content || p.faq_content || ''; }\n  } catch(e) {}\n}\nif (!main_content) throw new Error('Humanizer output missing main_content field.');\nconst parsed = $('Parse Article JSON').first().json;\n\n// FIX 1: Strip wrapping <p> tags from intro_content\nintro_content = (intro_content || parsed.intro_content || '').replace(/^\\s*<p>\\s*/i, '').replace(/\\s*<\\/p>\\s*$/i, '').trim();\n\n// FIX 2: Convert markdown tables to styled HTML tables\nfunction convertMarkdownTables(html) {\n  return html.replace(/(?:^|\\n)((?:\\|.+\\|\\n?)+)/gm, function(match, tableBlock) {\n    const lines = tableBlock.trim().split('\\n').filter(l => l.trim());\n    if (lines.length < 2) return match;\n    const isSeparator = l => /^\\|[-:\\s|]+\\|$/.test(l.trim());\n    const parseRow = l => l.trim().replace(/^\\|/, '').replace(/\\|$/, '').split('|').map(c => c.trim());\n    const headerLine = lines[0];\n    const sepLine = lines[1];\n    if (!isSeparator(sepLine)) return match;\n    const headers = parseRow(headerLine);\n    const dataLines = lines.slice(2);\n    let tableHtml = '<table style=\"width:100%;border-collapse:collapse;margin:20px 0;font-size:15px;\">';\n    tableHtml += '<thead><tr>';\n    headers.forEach(h => {\n      tableHtml += `<th style=\"background:#f2f2f2;border:1px solid #ccc;padding:10px 14px;text-align:left;font-weight:700;\">${h}</th>`;\n    });\n    tableHtml += '</tr></thead><tbody>';\n    dataLines.forEach((line, i) => {\n      const cells = parseRow(line);\n      const bg = i % 2 === 0 ? '#ffffff' : '#f9f9f9';\n      tableHtml += `<tr style=\"background:${bg}\">`;\n      cells.forEach(c => {\n        tableHtml += `<td style=\"border:1px solid #ccc;padding:10px 14px;\">${c}</td>`;\n      });\n      tableHtml += '</tr>';\n    });\n    tableHtml += '</tbody></table>';\n    return tableHtml;\n  });\n}\nmain_content = convertMarkdownTables(main_content);\n\n// FIX 3: Convert <h3>Q:...</h3> and <h4> in faq to bold paragraphs\nfaq_content = (faq_content || parsed.faq_content || '');\nfaq_content = faq_content.replace(/<h3>(.*?)<\\/h3>/gi, '<p><strong>$1</strong></p>');\nfaq_content = faq_content.replace(/<h4>(.*?)<\\/h4>/gi, '<p><strong>$1</strong></p>');\n\n// FIX 4: Prepend FAQ heading\nif (faq_content && !faq_content.includes('<h2')) {\n  faq_content = '<h2>Frequently Asked Questions</h2>' + faq_content;\n}\n\nreturn [{ json: { post_title: parsed.post_title, seo_title: parsed.seo_title, meta_description: parsed.meta_description, post_keywords: parsed.post_keywords, intro_content: intro_content, main_content: main_content, faq_content: faq_content } }];"
+      },
+      "id": "parse-humanizer-out-001",
+      "name": "Parse Humanizer Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "model": "qwen-max",
+        "options": {}
+      },
+      "id": "5f5b817c-0909-4298-9c14-0f3ab1456d56",
+      "name": "Qwen Cloud Chat Model3",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAlibabaCloud",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        464
+      ],
+      "credentials": {
+        "alibabaCloudApi": {
+          "id": "j0aIGj3QzaMkFeBH",
+          "name": "Qwen Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Article Title: {{ $json.post_title }}\nMeta Description: {{ $json.meta_description }}\nKeywords: {{ $json.post_keywords }}\n\nFull Article HTML (main_content):\n{{ $json.main_content }}\n\nTASK:\n1. Read the main_content HTML above and find its <h2> section headings.\n2. Pick the 3 most compelling headings for standalone Pinterest pins (skip generic ones like an FAQ heading if stronger options exist).\n3. For each of the 3 chosen headings, write one Pinterest pin.",
+        "options": {
+          "systemMessage": "You are a Pinterest marketing copywriter for shortconverter.com, a free online file converter.\n\nGiven a blog article's title, keywords, and full HTML body, you:\n1. Identify its <h2> headings.\n2. Select exactly 3 headings that would make compelling, click-worthy Pinterest pins.\n3. Write pin content for each.\n\nFor each of the 3 pins produce:\n- heading: the exact H2 heading text you based this pin on\n- title: a punchy Pinterest pin title, max 100 characters, keyword-rich, no false claims\n- description: an engaging Pinterest pin description, 2-3 sentences, 300-500 characters, naturally including the main keyword, written to make someone want to click through\n- hashtags: 5 to 8 relevant hashtags as one space-separated string, each starting with #, lowercase, no internal spaces\n- image_prompt: a detailed prompt for an AI image generator to create a clean, modern, Pinterest-style vertical graphic illustrating this pin's topic. Describe composition, color palette, and mood. Do NOT ask for any text, letters, numbers, or words to appear in the image.\n\nNever mention competitor converter tools. Keep the tone friendly and helpful.\n\nOutput ONLY a raw JSON object, no markdown fences, no commentary:\n{\"pins\":[{\"heading\":\"...\",\"title\":\"...\",\"description\":\"...\",\"hashtags\":\"...\",\"image_prompt\":\"...\"},{...},{...}]}"
+        }
+      },
+      "id": "09d897e3-0809-49e0-b709-5734e717a1a6",
+      "name": "Generate Pinterest Content",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1632,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output || '';\n\nfunction extractJson(text) {\n  let cleaned = text.trim().replace(/^```json\\s*/i, '').replace(/^```\\s*/i, '').replace(/\\s*```$/i, '').trim();\n  const s = cleaned.indexOf('{');\n  const e = cleaned.lastIndexOf('}');\n  if (s !== -1 && e !== -1) return JSON.parse(cleaned.substring(s, e + 1));\n  throw new Error('Could not parse pins JSON from AI output');\n}\n\nconst parsed = extractJson(raw);\nconst pins = parsed.pins || [];\nif (!Array.isArray(pins) || pins.length < 1) throw new Error('No pins found in AI output');\n\nconst toolUrl = $('Get row(s) in sheet').item.json['Tool URL'] || '';\nconst link = 'https://www.shortconverter.com/' + toolUrl.replace(/^https?:\\/\\/[^\\/]+\\//, '');\n\nreturn pins.slice(0, 3).map((p, i) => ({\n  json: {\n    pin_index: i + 1,\n    heading: p.heading || '',\n    title: (p.title || '').substring(0, 100),\n    description: p.description || '',\n    hashtags: p.hashtags || '',\n    image_prompt: p.image_prompt || '',\n    link\n  }\n}));"
+      },
+      "id": "ec187713-b372-462f-b91a-a6fe3f11f7b6",
+      "name": "Parse Pinterest Pins",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "destinationKey": "image_base64",
+        "options": {
+          "keepSource": "binary"
+        }
+      },
+      "id": "0d0b8b17-e9b9-4a08-9f28-a43e5c2d8c5d",
+      "name": "Convert Image to Base64",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        2144,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const imgItems = $input.all();\nconst pinItems = $('Parse Pinterest Pins').all();\n\nconst pins = imgItems.map((item, i) => {\n  const src = (pinItems[i] && pinItems[i].json) ? pinItems[i].json : {};\n  const mimeType = (item.binary && item.binary.data && item.binary.data.mimeType) ? item.binary.data.mimeType : 'image/png';\n  return {\n    title: src.title || '',\n    description: (src.description || '') + (src.hashtags ? ('\\n\\n' + src.hashtags) : ''),\n    hashtags: src.hashtags || '',\n    link: src.link || '',\n    content_type: (mimeType === 'image/jpg') ? 'image/jpeg' : mimeType,\n    image_base64: item.json.image_base64\n  };\n});\n\nreturn [{ json: { pin1: pins[0] || {}, pin2: pins[1] || {}, pin3: pins[2] || {} } }];"
+      },
+      "id": "7277d856-b491-4088-9b38-8315c550fa99",
+      "name": "Build Pinterest Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2368,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hook.eu1.make.com/q94msa8fcirvom6fntryqmlywby39wk4",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "e2401a2d-44dc-4792-8b79-cc4ed2098bb4",
+      "name": "Send Pins to Make.com",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2592,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "cachedResultName": "qwen-image-plus",
+          "mode": "list",
+          "value": "qwen-image-plus"
+        },
+        "prompt": "={{ $json.image_prompt }}",
+        "imageOptions": {
+          "size": "928*1664",
+          "promptExtend": true
+        }
+      },
+      "id": "8a1ab9e5-e872-4ea3-b891-4922fc502ae8",
+      "name": "Generate Pin Image",
+      "type": "@n8n/n8n-nodes-langchain.alibabaCloud",
+      "typeVersion": 1.1,
+      "position": [
+        2112,
+        256
+      ],
+      "credentials": {
+        "alibabaCloudApi": {
+          "id": "j0aIGj3QzaMkFeBH",
+          "name": "Qwen Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "width": 800,
+        "height": 1435,
+        "resizeOption": "ignoreAspectRatio",
+        "options": {
+          "destinationKey": "data",
+          "format": "jpeg",
+          "quality": 75
+        }
+      },
+      "id": "2fd6ff0d-f9f0-454d-bea4-df1d4ed5e71e",
+      "name": "Resize & Compress Pin Image",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        96
+      ],
+      "id": "aa84a70c-6df9-4514-8ebb-c2da41df052c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU",
+          "mode": "list",
+          "cachedResultName": "ShortConverter_SEO_Content_Plan",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 558144306,
+          "mode": "list",
+          "cachedResultName": "Content Plan",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VuFoefoiWQOTn1PMtSfWTaPznfcISPZxpJ-mHNKVDbU/edit#gid=558144306"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        80,
+        96
+      ],
+      "id": "49fc6f60-6632-4fa0-94e4-a0c82bd918c2",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "g9IUGRun7eXqIVMN",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        368,
+        96
+      ],
+      "id": "48cc8115-e833-4b38-893d-1eeaacf24321",
+      "name": "Limit"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Parse Article JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Article JSON": {
+      "main": [
+        [
+          {
+            "node": "Humanizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Cloud Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Humanizer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to ShortConverter": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Humanizer Output": {
+      "main": [
+        [
+          {
+            "node": "Post to ShortConverter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Humanizer": {
+      "main": [
+        [
+          {
+            "node": "Parse Humanizer Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Cloud Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Pinterest Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Pinterest Content": {
+      "main": [
+        [
+          {
+            "node": "Parse Pinterest Pins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Image to Base64": {
+      "main": [
+        [
+          {
+            "node": "Build Pinterest Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Pinterest Payload": {
+      "main": [
+        [
+          {
+            "node": "Send Pins to Make.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Generate Pinterest Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Pinterest Pins": {
+      "main": [
+        [
+          {
+            "node": "Generate Pin Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Pin Image": {
+      "main": [
+        [
+          {
+            "node": "Resize & Compress Pin Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resize & Compress Pin Image": {
+      "main": [
+        [
+          {
+            "node": "Convert Image to Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "aYQLqd0WKLCfP68i",
+    "timeSavedPerExecution": 3
+  },
+  "versionId": "d0265509-12b4-48ef-9933-ae3c5ebb81f0",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eb30a7377e070167b6ed60ba18c32ce463ef79c527b818861a15cc907fca2f53"
+  },
+  "nodeGroups": [],
+  "id": "Ic3w9hty1siRfgIw",
+  "tags": []
+}
