@@ -302,13 +302,13 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://www.shortconverter.com/api/admin/save-toolpage.php",
+        "url": "Your-website -endpoint",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "sc_api_7fd461a293b04c85ef10d9e86c73b2a5"
+              "value": "your-api-key"
             },
             {
               "name": "=Content-Type",
@@ -426,7 +426,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://hook.eu1.make.com/q94msa8fcirvom6fntryqmlywby39wk4",
+        "url": "your make.com webhook url",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json) }}",
